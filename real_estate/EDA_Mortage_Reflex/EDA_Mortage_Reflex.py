@@ -72,6 +72,29 @@ data = [
     {"name": "Page F", "uv": 2390, "pv": 3800, "amt": 2500},
     {"name": "Page G", "uv": 3490, "pv": 4300, "amt": 2100},
 ]
+# Function to create a pie chart for total interest vs principal paid
+def payment_pie_chart(interest_total, principal_total):
+    data = [
+        {"name": "Total Interest", "value": interest_total},
+        {"name": "Total Principal", "value": principal_total}
+    ]
+    
+    return rx.recharts.pie_chart(
+        rx.recharts.pie(
+            data=data,
+            data_key="value",
+            name_key="name",
+            cx="50%",
+            cy="50%",
+            label=True,
+            outer_radius="80%"
+        ),
+        rx.recharts.graphing_tooltip(),
+        rx.recharts.legend(),
+        height=300,
+        width="100%",
+    )
+
 class FormState(rx.State):
     principal: str = "560000.00"
     years: str = "25"
@@ -85,6 +108,8 @@ class FormState(rx.State):
     form_data: dict = {}
     output_text: str = ""
     amortization_schedule: pd.DataFrame = pd.DataFrame() # Add this for the DataFrame
+    interest_total: float = 0
+    principal_total: float = 0
     
     def set_principal(self, principal: str):
         self.principal = principal
@@ -140,7 +165,11 @@ class FormState(rx.State):
                 self.form_data["years"],
                 self.form_data["annual_interest_rate"] / 100,  # Convert percentage to decimal
             )
-
+            
+            # Calculate total interest and principal paid
+            if not self.amortization_schedule.empty:
+                self.interest_total = round(self.amortization_schedule['Interest'].sum(), 2)
+                self.principal_total = round(self.form_data["principal"], 2)  # Original principal amount
 
         except ValueError:
             self.output_text = "Invalid input. Please enter numbers."
@@ -245,6 +274,16 @@ def index() -> rx.Component:
                 pagination=True,
                 search=True,
                 sort=True,
+            ),
+        ),
+        
+        # Display pie chart for total interest vs principal paid
+        rx.cond(
+            FormState.amortization_schedule.empty,
+            rx.text("Interest vs Principal chart will appear here after calculation."),
+            rx.vstack(
+                rx.heading("Total Interest vs Principal Paid", size="3"),
+                payment_pie_chart(FormState.interest_total, FormState.principal_total)
             ),
         ),
         # composed()

@@ -2,13 +2,17 @@
 
 A repository of **Reflex template apps**.
 
-Run the reflex webapp for realestate:
+Added couple of them:
+
+1. Run the reflex webapp for realestate:
 
 ```sh
 reflex init
 cd ./real_estate
 reflex run
 ```
+
+2. Run the reflex webapp sample for job analysis:
 
 ```sh
 sudo apt-get install python3-virtualenv

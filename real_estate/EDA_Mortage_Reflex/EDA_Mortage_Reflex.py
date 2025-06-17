@@ -247,7 +247,7 @@ def index() -> rx.Component:
                 sort=True,
             ),
         ),
-        composed()
+        # composed()
     )
 
 app = rx.App()

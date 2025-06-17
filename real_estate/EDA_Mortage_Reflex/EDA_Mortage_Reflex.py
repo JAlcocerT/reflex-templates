@@ -256,7 +256,9 @@ def index() -> rx.Component:
                     ),
                     spacing="4",
                 ),
-                rx.button("Calculate", on_click=FormState.handle_submit),
+                rx.center(
+                    rx.button("Calculate", on_click=FormState.handle_submit),
+                ),
                 width="100%",
                 spacing="4",
             ),
@@ -265,6 +267,19 @@ def index() -> rx.Component:
         rx.heading("Results"),
         rx.text(FormState.output_text),
 
+        # Display pie chart for total interest vs principal paid
+        rx.cond(
+            FormState.amortization_schedule.empty,
+            rx.text("Interest vs Principal chart will appear here after calculation."),
+            rx.center(
+                rx.vstack(
+                    rx.heading("Total Interest vs Principal Paid", size="3"),
+                    payment_pie_chart(FormState.interest_total, FormState.principal_total),
+                    width="80%",
+                )
+            ),
+        ),
+        
         # Display amortization schedule if available
         rx.cond(
             FormState.amortization_schedule.empty,  # The Var directly!
@@ -274,16 +289,6 @@ def index() -> rx.Component:
                 pagination=True,
                 search=True,
                 sort=True,
-            ),
-        ),
-        
-        # Display pie chart for total interest vs principal paid
-        rx.cond(
-            FormState.amortization_schedule.empty,
-            rx.text("Interest vs Principal chart will appear here after calculation."),
-            rx.vstack(
-                rx.heading("Total Interest vs Principal Paid", size="3"),
-                payment_pie_chart(FormState.interest_total, FormState.principal_total)
             ),
         ),
         # composed()

@@ -7,13 +7,20 @@ Added couple of them:
 1. Run the reflex webapp for realestate:
 
 ```sh
-reflex init
+#reflex init
 cd ./real_estate
 reflex run
-#docker-compose up --build
+#docker compose up --build
 ```
 
 2. Run the reflex webapp sample for job analysis:
+
+```sh
+cd ./job_analysis
+reflex run
+```
+
+---
 
 ```sh
 sudo apt-get install python3-virtualenv

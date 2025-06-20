@@ -25,7 +25,8 @@ reflex run
 ```sh
 mkdir login_mailerlite
 cd ./login_mailerlite
-
+reflex init
+reflex run
 ```
 
 ---

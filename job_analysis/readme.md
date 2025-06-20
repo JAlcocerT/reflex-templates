@@ -1,4 +1,4 @@
-Run the reflex webapp:
+Run the reflex webapp to check the trend of scrapped job offers.
 
 ```sh
 cd ./job_analysis

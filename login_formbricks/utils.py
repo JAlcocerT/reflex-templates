@@ -1,11 +1,15 @@
 # your_app_name/utils.py
 
+import os
 import pandas as pd
 import reflex as rx # Import reflex for rx.toast if you want to use it here for debugging/server-side messages
 
-# IMPORTANT: Replace with your actual Google Sheet URL (CSV export)
-# Make sure this URL is publicly accessible or your Reflex backend has access
-FORM_BRICKS_SHEET_URL = "YOUR_GOOGLE_SHEET_CSV_EXPORT_URL_HERE" # <--- **UPDATE THIS**
+# IMPORTANT: Set the Google Sheet URL as an environment variable named FORM_BRICKS_SHEET_URL
+# Example: export FORM_BRICKS_SHEET_URL="https://docs.google.com/spreadsheets/d/1b138zIAXTTe5sATavgLz0JsSsPtFv6cZvwhKUjFRGI4/export?format=csv"
+FORM_BRICKS_SHEET_URL = os.environ.get("FORM_BRICKS_SHEET_URL")
+if not FORM_BRICKS_SHEET_URL:
+    rx.log("FORM_BRICKS_SHEET_URL environment variable is not set! Email validation will fail.")
+    FORM_BRICKS_SHEET_URL = ""
 
 # Function to check if an email is in FormBricks responses (Google Sheet)
 def check_formbricks_subscription(email: str) -> bool:

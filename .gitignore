@@ -12,3 +12,5 @@ venv/
 
 
 *_venv/
+
+.env

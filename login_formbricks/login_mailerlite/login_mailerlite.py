@@ -1,36 +1,22 @@
 import reflex as rx
-from rxconfig import config # Import config
-from utils import check_formbricks_subscription # Import your validation function
+from rxconfig import config
+from utils import check_formbricks_subscription
 
 class State(rx.State):
     """The app state."""
-    name: str = ""
-    email: str = ""
+    name: str
+    email: str
     submitted: bool = False
-    validation_error: str = "" # New state variable for validation messages
 
-    async def handle_submit(self, form_data: dict): # Use async if fetching external data
-        """Handle the form submission and validate the email."""
+    def handle_submit(self, form_data: dict):
+        """Handle the form submission."""
         self.name = form_data.get("name", "")
         self.email = form_data.get("email", "")
-        self.validation_error = "" # Clear previous errors
-
-        if not self.email:
-            self.validation_error = "Email is required."
-            return rx.toast("Email is required.", color="red")
-
-        # Perform the email validation
-        # The check_formbricks_subscription function might take time
-        # so consider making this state method async and awaiting the call
-        # if the external data fetch is significant.
-        is_valid_email = await rx.background(check_formbricks_subscription, self.email)
-
-        if is_valid_email:
+        if check_formbricks_subscription(self.email):
             self.submitted = True
-            return rx.toast(f"Welcome, {self.name}!", color="green")
         else:
-            self.validation_error = "This email is not authorized. Please try again or contact support."
-            return rx.toast(self.validation_error, color="red")
+            rx.toast("Email not authorized", color="red")
+            self.submitted = False
 
 def welcome_page() -> rx.Component:
     """The welcome page with Reflex intro."""
@@ -80,7 +66,6 @@ def form() -> rx.Component:
                             name="name",
                             placeholder="Enter your name",
                             required=True,
-                            value=State.name, # Bind input value to state for sticky form
                         ),
                         align_items="flex-start", # Align text and input to the left
                     ),
@@ -94,14 +79,8 @@ def form() -> rx.Component:
                             type="email",
                             placeholder="Enter your email",
                             required=True,
-                            value=State.email, # Bind input value to state
                         ),
                         align_items="flex-start", # Align text and input to the left
-                    ),
-                    # Display validation error message if any
-                    rx.cond(
-                        State.validation_error,
-                        rx.text(State.validation_error, color="red", font_size="0.9em"),
                     ),
                     rx.button("Login", type="submit", width="100%"), # Full width button
                     spacing="4", # Adjust spacing between elements

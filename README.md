@@ -20,14 +20,16 @@ cd ./job_analysis
 reflex run
 ```
 
-3. Login to reflex webapp as per mailerlite:
+3. Login to reflex webapp as per **mailerlite/formbricks/sqlite**:
 
 ```sh
-mkdir login_mailerlite
+#mkdir login_mailerlite
 cd ./login_mailerlite
 reflex init
 reflex run
 ```
+
+
 
 ---
 

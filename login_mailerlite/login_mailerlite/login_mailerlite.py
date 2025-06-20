@@ -3,7 +3,6 @@ import reflex as rx
 # Assuming rxconfig.py exists and has a config.app_name
 from rxconfig import config
 
-# Define the state for the app
 class State(rx.State):
     """The app state."""
     name: str
@@ -16,7 +15,6 @@ class State(rx.State):
         self.email = form_data.get("email", "")
         self.submitted = True
 
-# Define the welcome page
 def welcome_page() -> rx.Component:
     """The welcome page with Reflex intro."""
     return rx.container(
@@ -40,46 +38,66 @@ def welcome_page() -> rx.Component:
         rx.logo(),
     )
 
-# Define the form component
 def form() -> rx.Component:
-    """The form to collect name and email."""
-    return rx.card(
-        rx.form(
-            rx.vstack(
-                rx.heading("Enter Your Details"),
-                rx.text("Please provide your name and email to continue."),
-                rx.text(
-                    "Name ",
-                    rx.text.span("*", color="red"),
+    """The login form inspired by the newsletter components."""
+    return rx.center( # Center the card on the page
+        rx.card(
+            rx.form(
+                rx.vstack(
+                    rx.hstack( # Mimic the image and heading layout
+                        rx.image(src="/avatar.png", width="50px", height="50px"), # Placeholder for a login icon
+                        rx.vstack(
+                            rx.heading("Welcome Back!"),
+                            rx.text("Please log in to continue."),
+                        ),
+                        align_items="center", # Align items vertically in the hstack
+                    ),
+                    rx.divider(), # Add a subtle separator
+
+                    rx.vstack(
+                        rx.text(
+                            "Your Name ",
+                            rx.text.span("*", color="red"),
+                        ),
+                        rx.input(
+                            name="name",
+                            placeholder="Enter your name",
+                            required=True,
+                        ),
+                        align_items="flex-start", # Align text and input to the left
+                    ),
+                    rx.vstack(
+                        rx.text(
+                            "Your Email ",
+                            rx.text.span("*", color="red"),
+                        ),
+                        rx.input(
+                            name="email",
+                            type="email",
+                            placeholder="Enter your email",
+                            required=True,
+                        ),
+                        align_items="flex-start", # Align text and input to the left
+                    ),
+                    rx.button("Login", type="submit", width="100%"), # Full width button
+                    spacing="4", # Adjust spacing between elements
                 ),
-                rx.input(
-                    name="name",
-                    required=True,
-                ),
-                rx.text(
-                    "Email ",
-                    rx.text.span("*", color="red"),
-                ),
-                rx.input(
-                    name="email",
-                    type="email",
-                    required=True,
-                ),
-                rx.button("Submit", type="submit"),
+                on_submit=State.handle_submit,
             ),
-            on_submit=State.handle_submit,
-        )
+            # Optional: Add max width to the card for better aesthetics
+            max_width="400px",
+            width="100%",
+        ),
+        height="100vh", # Center the card vertically on the screen
     )
 
-# Define the main app
 def index() -> rx.Component:
     """The main app."""
     return rx.cond(
         State.submitted,
-        welcome_page(),  # Show the welcome page after submission
-        form(),          # Show the form initially
+        welcome_page(),
+        form(),
     )
 
-# Add the app to the Reflex backend
 app = rx.App()
 app.add_page(index)

@@ -1,7 +1,7 @@
 #https://github.com/JAlcocerT/Streamlit-AIssistant/blob/main/Z_Auth_Ways/Auth_Mailerlite.py
 
 import requests
-import streamlit as st
+#import streamlit as st
 
 # Function to check if an email is in MailerLite subscribers
 def check_mailerlite_subscription(email, api_key, base_url, auth_mode):
@@ -26,5 +26,5 @@ def check_mailerlite_subscription(email, api_key, base_url, auth_mode):
         # Check if the email is in the list of subscribers
         return any(subscriber.get('email') == email for subscriber in subscribers)
     else:
-        st.error(f"Error fetching subscribers from MailerLite: {response.status_code} - {response.text}")
+        print(f"Error fetching subscribers from MailerLite: {response.status_code} - {response.text}")
         return False

@@ -4,7 +4,7 @@ A repository of **Reflex template apps**.
 
 Added couple of them:
 
-1. Run the reflex webapp for realestate:
+1. Run the reflex webapp for **realestate**:
 
 ```sh
 #reflex init
@@ -13,11 +13,19 @@ reflex run
 #docker compose up --build
 ```
 
-2. Run the reflex webapp sample for job analysis:
+2. Run the reflex webapp sample for **job analysis**:
 
 ```sh
 cd ./job_analysis
 reflex run
+```
+
+3. Login to reflex webapp as per mailerlite:
+
+```sh
+mkdir login_mailerlite
+cd ./login_mailerlite
+
 ```
 
 ---

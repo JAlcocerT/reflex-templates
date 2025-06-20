@@ -15,7 +15,7 @@ class State(rx.State):
         if check_formbricks_subscription(self.email):
             self.submitted = True
         else:
-            rx.toast("Email not authorized", color="red")
+            rx.toast("Email not authorized", important=True)
             self.submitted = False
 
 def welcome_page() -> rx.Component:

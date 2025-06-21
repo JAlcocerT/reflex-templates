@@ -27,4 +27,4 @@ COPY . .
 EXPOSE 8001 3001
 
 # Command to run the Reflex app
-CMD ["reflex", "run", "--backend-port", "8001", "--frontend-port", "3001"]
+CMD ["reflex", "run", "--env", "prod", "--backend-port", "8001", "--frontend-port", "3001"]

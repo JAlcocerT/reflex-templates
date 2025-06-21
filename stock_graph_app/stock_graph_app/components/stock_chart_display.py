@@ -269,7 +269,7 @@ def no_data_component() -> rx.Component:
     )
 
 
-from stock_graph_app.components.ag_grid_table import google_sheet_data_table, filtered_gsheet_data_table, grouped_stock_table, stock_treemap
+from stock_graph_app.components.ag_grid_table import google_sheet_data_table, filtered_gsheet_data_table, grouped_stock_table, stock_treemap, stocks_area_chart
 
 def stock_graph_page() -> rx.Component:
     return rx.el.div(
@@ -320,6 +320,8 @@ def stock_graph_page() -> rx.Component:
                     grouped_stock_table(),
                     # --- Treemap of Stock Aggregation ---
                     stock_treemap(),
+                    # --- Filled Area Chart of Stock Close Prices ---
+                    stocks_area_chart(),
                 ),
                 rx.cond(~StockState.error_message, no_data_component(), rx.el.div()),
             ),

@@ -2,6 +2,7 @@ import reflex as rx
 import pandas as pd
 import os
 import plotly.express as px
+from stock_graph_app.utils.stocks_combination_for_display import fetch_all_stocks_close_by_date, to_long_format_for_area_plot
 
 # Import the utility functions for Google Sheet loading and filtering
 from stock_graph_app.utils.udf_gsheet import fetch_gsheet_as_dataframe, filter_dataframe_columns
@@ -79,5 +80,27 @@ def stock_treemap():
         path=["Stock"],
         values="Total_Comprada",
         title="Distribution of Total Cantidad_Comprada per Stock",
+    )
+    return rx.center(rx.plotly(data=fig))
+
+
+def stocks_area_chart():
+    """
+    Plotly filled area chart showing Close price evolution for all stocks.
+    """
+    # Get the stock list from the grouped table logic
+    filtered_df = filter_dataframe_columns(main_df, ["Stock", "Cantidad_Comprada"], n_rows=None)
+    grouped_df = group_by_stock(filtered_df)
+    stock_list = list(grouped_df["Stock"])
+    close_table = fetch_all_stocks_close_by_date(stock_list)
+    long_df = to_long_format_for_area_plot(close_table)
+    if long_df.empty:
+        return rx.text("No data available for area chart.")
+    fig = px.area(
+        long_df,
+        x="Date",
+        y="Close",
+        color="Stock",
+        title="Stock Close Prices Over Time (Area Chart)",
     )
     return rx.center(rx.plotly(data=fig))

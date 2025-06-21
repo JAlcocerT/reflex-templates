@@ -14,6 +14,7 @@ def fetch_gsheet_as_dataframe(gsheet_url: str) -> pd.DataFrame:
     print(f"[fetch_gsheet_as_dataframe] Using Google Sheet URL: {gsheet_url}")
     try:
         df = pd.read_csv(gsheet_url)
+        print(f"[fetch_gsheet_as_dataframe] Columns loaded: {list(df.columns)}")
     except Exception as e:
         df = pd.DataFrame({"Error": [f"Failed to load CSV: {e}"]})
     return df

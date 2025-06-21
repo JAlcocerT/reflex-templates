@@ -29,7 +29,8 @@ cd ./stock_graph_app
 uv venv
 uv pip install -r requirements.txt
 uv run reflex run
-#uv run reflex run --backend-port 8001 --frontend-port 3000
+#uv run reflex run --backend-port 8005 --frontend-port 3005
+uv run reflex run --env prod --backend-port 8005 --frontend-port 3005
 ```
 
 ```sh

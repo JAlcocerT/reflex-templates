@@ -38,7 +38,9 @@ def filtered_gsheet_data_table():
     """
     Shows the filtered Google Sheet data with only ['Stock', 'Cantidad_Comprada'] columns and at most 10 rows.
     """
-    filtered_df = filter_dataframe_columns(main_df, ["Stock", "Cantidad_Comprada"], n_rows=10)
+    #filtered_df = filter_dataframe_columns(main_df, ["Stock", "Cantidad_Comprada"], n_rows=10)
+    filtered_df = filter_dataframe_columns(main_df, ["Stock", "Cantidad_Comprada"], n_rows=None)
+
     return rx.data_table(
         data=filtered_df,
         pagination=True,

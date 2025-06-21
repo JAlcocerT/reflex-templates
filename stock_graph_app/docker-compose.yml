@@ -1,0 +1,15 @@
+version: '3.8'
+services:
+  reflex-app:
+    build: .
+    container_name: reflex_stock_graph_app
+    ports:
+      - "8001:8001"
+      - "3001:3001"
+    env_file:
+      - .env
+    # environment:
+    #   - GOOGLE_SHEET_CSV_URL=${GOOGLE_SHEET_CSV_URL}
+    volumes:
+      - .:/app
+    restart: unless-stopped

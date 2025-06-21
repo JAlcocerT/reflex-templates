@@ -1,0 +1,61 @@
+2025-06-21 13:34:26,672 ERROR:concurrent.futures:exception calling callback for <Future at 0x725b00627b50 state=finished raised ValueError>
+Traceback (most recent call last):
+  File "/home/jalcocert/.local/share/uv/python/cpython-3.11.12-linux-x86_64-gnu/lib/python3.11/concurrent/futures/_base.py", line 340, in _invoke_callbacks
+    callback(self)
+  File "/home/jalcocert/Desktop/IT/reflex-templates/stock_graph_app/.venv/lib/python3.11/site-packages/reflex/app.py", line 598, in callback
+    return f.result()
+           ^^^^^^^^^^
+  File "/home/jalcocert/.local/share/uv/python/cpython-3.11.12-linux-x86_64-gnu/lib/python3.11/concurrent/futures/_base.py", line 449, in result
+    return self.__get_result()
+           ^^^^^^^^^^^^^^^^^^^
+  File "/home/jalcocert/.local/share/uv/python/cpython-3.11.12-linux-x86_64-gnu/lib/python3.11/concurrent/futures/_base.py", line 401, in __get_result
+    raise self._exception
+  File "/home/jalcocert/.local/share/uv/python/cpython-3.11.12-linux-x86_64-gnu/lib/python3.11/concurrent/futures/thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/jalcocert/Desktop/IT/reflex-templates/stock_graph_app/.venv/lib/python3.11/site-packages/reflex/app.py", line 1214, in _compile
+    self._compile_page(route, save_page=should_compile)
+  File "/home/jalcocert/Desktop/IT/reflex-templates/stock_graph_app/.venv/lib/python3.11/site-packages/reflex/app.py", line 840, in _compile_page
+    component, enable_state = compiler.compile_unevaluated_page(
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/jalcocert/Desktop/IT/reflex-templates/stock_graph_app/.venv/lib/python3.11/site-packages/reflex/compiler/compiler.py", line 808, in compile_unevaluated_page
+    component = into_component(page.component)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/jalcocert/Desktop/IT/reflex-templates/stock_graph_app/.venv/lib/python3.11/site-packages/reflex/compiler/compiler.py", line 734, in into_component
+    component_called = component()
+                       ^^^^^^^^^^^
+  File "/home/jalcocert/Desktop/IT/reflex-templates/stock_graph_app/stock_graph_app/stock_graph_app.py", line 20, in index
+    stock_graph_page(),
+    ^^^^^^^^^^^^^^^^^^
+  File "/home/jalcocert/Desktop/IT/reflex-templates/stock_graph_app/stock_graph_app/components/stock_chart_display.py", line 320, in stock_graph_page
+    grouped_stock_table(),
+    ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/jalcocert/Desktop/IT/reflex-templates/stock_graph_app/stock_graph_app/components/ag_grid_table.py", line 58, in grouped_stock_table
+    grouped_df = group_by_stock(filtered_df)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/jalcocert/Desktop/IT/reflex-templates/stock_graph_app/stock_graph_app/utils/stocks_aggregations.py", line 19, in group_by_stock
+    .astype(float)
+     ^^^^^^^^^^^^^
+  File "/home/jalcocert/Desktop/IT/reflex-templates/stock_graph_app/.venv/lib/python3.11/site-packages/pandas/core/generic.py", line 6662, in astype
+    new_data = self._mgr.astype(dtype=dtype, copy=copy, errors=errors)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/jalcocert/Desktop/IT/reflex-templates/stock_graph_app/.venv/lib/python3.11/site-packages/pandas/core/internals/managers.py", line 430, in astype
+    return self.apply(
+           ^^^^^^^^^^^
+  File "/home/jalcocert/Desktop/IT/reflex-templates/stock_graph_app/.venv/lib/python3.11/site-packages/pandas/core/internals/managers.py", line 363, in apply
+    applied = getattr(b, f)(**kwargs)
+              ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/jalcocert/Desktop/IT/reflex-templates/stock_graph_app/.venv/lib/python3.11/site-packages/pandas/core/internals/blocks.py", line 784, in astype
+    new_values = astype_array_safe(values, dtype, copy=copy, errors=errors)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/jalcocert/Desktop/IT/reflex-templates/stock_graph_app/.venv/lib/python3.11/site-packages/pandas/core/dtypes/astype.py", line 237, in astype_array_safe
+    new_values = astype_array(values, dtype, copy=copy)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/jalcocert/Desktop/IT/reflex-templates/stock_graph_app/.venv/lib/python3.11/site-packages/pandas/core/dtypes/astype.py", line 182, in astype_array
+    values = _astype_nansafe(values, dtype, copy=copy)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/jalcocert/Desktop/IT/reflex-templates/stock_graph_app/.venv/lib/python3.11/site-packages/pandas/core/dtypes/astype.py", line 133, in _astype_nansafe
+    return arr.astype(dtype, copy=True)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: could not convert string to float: '14.500.00'
+Happened while evaluating page 'index'

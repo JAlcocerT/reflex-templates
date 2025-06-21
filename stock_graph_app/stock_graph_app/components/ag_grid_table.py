@@ -36,13 +36,28 @@ def google_sheet_data_table():
 
 def filtered_gsheet_data_table():
     """
-    Shows the filtered Google Sheet data with only ['Stock', 'Cantidad_Comprada'] columns and at most 10 rows.
+    Shows the filtered Google Sheet data with only ['Stock', 'Cantidad_Comprada'] columns and all available rows.
     """
-    #filtered_df = filter_dataframe_columns(main_df, ["Stock", "Cantidad_Comprada"], n_rows=10)
     filtered_df = filter_dataframe_columns(main_df, ["Stock", "Cantidad_Comprada"], n_rows=None)
-
     return rx.data_table(
         data=filtered_df,
+        pagination=True,
+        search=True,
+        sort=True,
+        width="100%",
+    )
+
+# --- Grouped Stock Table ---
+from stock_graph_app.utils.stocks_aggregations import group_by_stock
+
+def grouped_stock_table():
+    """
+    Shows the grouped data by 'Stock' with total 'Cantidad_Comprada'.
+    """
+    filtered_df = filter_dataframe_columns(main_df, ["Stock", "Cantidad_Comprada"], n_rows=None)
+    grouped_df = group_by_stock(filtered_df)
+    return rx.data_table(
+        data=grouped_df,
         pagination=True,
         search=True,
         sort=True,

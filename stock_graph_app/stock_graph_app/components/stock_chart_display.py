@@ -269,7 +269,7 @@ def no_data_component() -> rx.Component:
     )
 
 
-from stock_graph_app.components.ag_grid_table import google_sheet_data_table, filtered_gsheet_data_table
+from stock_graph_app.components.ag_grid_table import google_sheet_data_table, filtered_gsheet_data_table, grouped_stock_table
 
 def stock_graph_page() -> rx.Component:
     return rx.el.div(
@@ -314,8 +314,10 @@ def stock_graph_page() -> rx.Component:
                     ),
                     # --- Google Sheet Data Table below the hardcoded table ---
                     google_sheet_data_table(),
-                    # --- Filtered Google Sheet Data Table (Stock & Cantidad_Comprada, 10 rows) ---
+                    # --- Filtered Google Sheet Data Table (Stock & Cantidad_Comprada, all rows) ---
                     filtered_gsheet_data_table(),
+                    # --- Grouped Stock Table (Total Cantidad_Comprada per Stock) ---
+                    grouped_stock_table(),
                 ),
                 rx.cond(~StockState.error_message, no_data_component(), rx.el.div()),
             ),

@@ -270,6 +270,8 @@ def no_data_component() -> rx.Component:
 
 
 from stock_graph_app.components.ag_grid_table import google_sheet_data_table, filtered_gsheet_data_table, grouped_stock_table, stock_treemap, stocks_area_chart
+from stock_graph_app.components.sample_reflex_table import sample_reflex_table
+from stock_graph_app.components.cagr_table import cagr_table
 
 def stock_graph_page() -> rx.Component:
     return rx.el.div(
@@ -285,33 +287,9 @@ def stock_graph_page() -> rx.Component:
                     time_range_selector_component(),
                     chart_component(),
                     # --- Table below the chart ---
-                    rx.table.root(
-                        rx.table.header(
-                            rx.table.row(
-                                rx.table.column_header_cell("Full name"),
-                                rx.table.column_header_cell("Email"),
-                                rx.table.column_header_cell("Group"),
-                            ),
-                        ),
-                        rx.table.body(
-                            rx.table.row(
-                                rx.table.row_header_cell("Danilo Sousa"),
-                                rx.table.cell("danilo@example.com"),
-                                rx.table.cell("Developer"),
-                            ),
-                            rx.table.row(
-                                rx.table.row_header_cell("Zahra Ambessa"),
-                                rx.table.cell("zahra@example.com"),
-                                rx.table.cell("Admin"),
-                            ),
-                            rx.table.row(
-                                rx.table.row_header_cell("Jasper Eriks"),
-                                rx.table.cell("jasper@example.com"),
-                                rx.table.cell("Developer"),
-                            ),
-                        ),
-                        width="100%",
-                    ),
+                    sample_reflex_table(),
+                    # --- CAGR Table (new component) ---
+                    cagr_table(),
                     # --- Google Sheet Data Table below the hardcoded table ---
                     google_sheet_data_table(),
                     # --- Filtered Google Sheet Data Table (Stock & Cantidad_Comprada, all rows) ---

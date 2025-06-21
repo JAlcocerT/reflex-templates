@@ -1,3 +1,13 @@
+import logging
+import sys
+
+logging.basicConfig(
+    filename="reflex_debug.log",
+    level=logging.INFO,
+    format="%(asctime)s %(levelname)s:%(name)s:%(message)s",
+    force=True,
+)
+
 import reflex as rx
 
 from stock_graph_app.components.stock_chart_display import (

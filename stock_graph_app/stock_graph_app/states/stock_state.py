@@ -2,6 +2,16 @@ from typing import List, TypedDict
 
 import reflex as rx
 import yfinance as yf
+import pandas as pd
+import logging
+
+logging.basicConfig(
+    filename="reflex_debug.log",
+    level=logging.INFO,
+    format="%(asctime)s %(levelname)s:%(name)s:%(message)s",
+    force=True,
+)
+logger = logging.getLogger(__name__)
 
 
 class HistoricalDataPoint(TypedDict):
@@ -135,7 +145,62 @@ class StockState(rx.State):
             self.is_loading = False
             return
 
+        # If more than one ticker is provided, call the combined fetch
+        if "," in ticker_to_use:
+            await self.fetch_combined_stock_data(form_data)
+            return
+
         await self._internal_fetch_stock_data(ticker_to_use)
+
+    @rx.event
+    async def fetch_combined_stock_data(self, form_data: dict | None = None):
+        """Fetch and combine historical data for multiple tickers separated by commas."""
+        tickers_input = self.search_ticker_input
+        if form_data and "ticker_input" in form_data and form_data["ticker_input"]:
+            tickers_input = form_data["ticker_input"].upper()
+            self.search_ticker_input = tickers_input
+
+        tickers = [t.strip() for t in tickers_input.split(",") if t.strip()]
+        if not tickers:
+            self.error_message = "Please enter at least one ticker symbol."
+            self.is_loading = False
+            return
+
+        self.is_loading = True
+        self.error_message = ""
+        try:
+            data_frames = []
+            for ticker in tickers:
+                yf_ticker = yf.Ticker(ticker)
+                params = self._determine_period_interval(self.selected_time_range)
+                hist_df = yf_ticker.history(period=params["period"], interval=params["interval"])
+                if not hist_df.empty:
+                    logger.info(f"Data found for {ticker}")
+                    hist_df = hist_df.reset_index()
+                    date_col = "Datetime" if "Datetime" in hist_df.columns else "Date"
+                    hist_df = hist_df[[date_col, "Close"]].rename(columns={"Close": ticker, date_col: "Date"})
+                    data_frames.append(hist_df.set_index("Date"))
+                else:
+                    logger.warning(f"No data found for {ticker}")
+            if data_frames:
+                combined_df = pd.concat(data_frames, axis=1).fillna(0)
+                combined_df["Combined"] = combined_df.sum(axis=1)
+                combined_df = combined_df.reset_index()
+                # Use the most granular date formatting present
+                if combined_df["Date"].dtype.name.startswith("datetime"):
+                    combined_df["name"] = combined_df["Date"].dt.strftime("%b %d %Y %H:%M")
+                else:
+                    combined_df["name"] = combined_df["Date"].astype(str)
+                combined_df["price"] = combined_df["Combined"].round(2)
+                self.historical_data = combined_df[["name", "price"]].to_dict("records")
+            else:
+                self.historical_data = []
+                self.error_message = "No data found for the given tickers."
+        except Exception as e:
+            self.error_message = f"Error fetching combined data: {e!s}"
+            self.historical_data = []
+        finally:
+            self.is_loading = False
 
     @rx.event
     async def refresh_data(self):

@@ -269,6 +269,8 @@ def no_data_component() -> rx.Component:
     )
 
 
+from stock_graph_app.components.ag_grid_table import google_sheet_data_table
+
 def stock_graph_page() -> rx.Component:
     return rx.el.div(
         search_bar_component(),
@@ -282,6 +284,36 @@ def stock_graph_page() -> rx.Component:
                     stock_header_component(),
                     time_range_selector_component(),
                     chart_component(),
+                    # --- Table below the chart ---
+                    rx.table.root(
+                        rx.table.header(
+                            rx.table.row(
+                                rx.table.column_header_cell("Full name"),
+                                rx.table.column_header_cell("Email"),
+                                rx.table.column_header_cell("Group"),
+                            ),
+                        ),
+                        rx.table.body(
+                            rx.table.row(
+                                rx.table.row_header_cell("Danilo Sousa"),
+                                rx.table.cell("danilo@example.com"),
+                                rx.table.cell("Developer"),
+                            ),
+                            rx.table.row(
+                                rx.table.row_header_cell("Zahra Ambessa"),
+                                rx.table.cell("zahra@example.com"),
+                                rx.table.cell("Admin"),
+                            ),
+                            rx.table.row(
+                                rx.table.row_header_cell("Jasper Eriks"),
+                                rx.table.cell("jasper@example.com"),
+                                rx.table.cell("Developer"),
+                            ),
+                        ),
+                        width="100%",
+                    ),
+                    # --- Google Sheet Data Table below the hardcoded table ---
+                    google_sheet_data_table(),
                 ),
                 rx.cond(~StockState.error_message, no_data_component(), rx.el.div()),
             ),

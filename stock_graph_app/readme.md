@@ -10,6 +10,7 @@ Tested:
 * https://reflex.dev/docs/library/tables-and-data-grids/ag-grid/ Which is deprecated and **not working**
 * https://reflex.dev/docs/library/tables-and-data-grids/table/ **Working**
 * https://reflex.dev/docs/library/tables-and-data-grids/data-table/ **Working**
+* https://reflex.dev/docs/library/graphing/other-charts/plotly/ **Working**
 
 ## Running with `uv` (uvicorn + pip replacement)
 
@@ -18,6 +19,7 @@ Tested:
 ```bash
 pip install uv
 #uv pip install python-dotenv
+uv pip install plotly
 ```
 
 Then, to install dependencies and run the app:

@@ -1,6 +1,7 @@
 import reflex as rx
 import pandas as pd
 import os
+import plotly.express as px
 
 # Import the utility functions for Google Sheet loading and filtering
 from stock_graph_app.utils.udf_gsheet import fetch_gsheet_as_dataframe, filter_dataframe_columns
@@ -63,3 +64,20 @@ def grouped_stock_table():
         sort=True,
         width="100%",
     )
+
+
+def stock_treemap():
+    """
+    Plotly treemap showing the distribution of Total_Comprada per Stock.
+    """
+    filtered_df = filter_dataframe_columns(main_df, ["Stock", "Cantidad_Comprada"], n_rows=None)
+    grouped_df = group_by_stock(filtered_df)
+    if grouped_df.empty or grouped_df["Total_Comprada"].sum() == 0:
+        return rx.text("No data available for treemap.")
+    fig = px.treemap(
+        grouped_df,
+        path=["Stock"],
+        values="Total_Comprada",
+        title="Distribution of Total Cantidad_Comprada per Stock",
+    )
+    return rx.center(rx.plotly(data=fig))

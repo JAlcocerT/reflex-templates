@@ -17,6 +17,7 @@ Tested:
 
 ```bash
 pip install uv
+#uv pip install python-dotenv
 ```
 
 Then, to install dependencies and run the app:

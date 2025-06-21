@@ -64,3 +64,17 @@ def fetch_all_stocks_close_by_date(stock_list: List[str], period="1mo", interval
     combined = pd.DataFrame(closes)
     combined.index.name = 'Date'
     return combined.reset_index()
+
+
+def to_long_format_for_area_plot(df: pd.DataFrame) -> pd.DataFrame:
+    """
+    Convert wide-format DataFrame (Date, stock columns) to long-format for plotly area plot.
+    Args:
+        df (pd.DataFrame): Output of fetch_all_stocks_close_by_date
+    Returns:
+        pd.DataFrame: Columns ['Date', 'Stock', 'Close']
+    """
+    if df.empty or 'Date' not in df.columns:
+        return pd.DataFrame(columns=['Date', 'Stock', 'Close'])
+    long_df = df.melt(id_vars=['Date'], var_name='Stock', value_name='Close')
+    return long_df

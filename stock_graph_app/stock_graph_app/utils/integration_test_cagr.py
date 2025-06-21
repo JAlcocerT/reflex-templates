@@ -1,5 +1,6 @@
-import os
 from dotenv import load_dotenv
+load_dotenv()
+import os
 import pandas as pd
 from udf_gsheet import fetch_gsheet_as_dataframe
 from stocks_aggregations import group_by_stock

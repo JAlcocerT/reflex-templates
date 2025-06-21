@@ -37,7 +37,13 @@ uv run reflex run --env prod --backend-port 8005 --frontend-port 3005
 #docker compose --build
 #docker compose build
 docker build -t my_custom_reflex_app:latest .
-docker run --env-file ./stock_graph_app/.env -p 8033:8001 -p 3033:3001 my_custom_reflex_app:latest
+#docker run --env-file ./stock_graph_app/.env -p 8033:8001 -p 3033:3001 my_custom_reflex_app:latest
+
+docker run \
+  --env-file ./stock_graph_app/.env \
+  -e ${GOOGLE_SHEET_CSV_URL} \
+  -p 8033:8001 -p 3033:3001 \
+  my_custom_reflex_app:latest
 ```
 
 ---
